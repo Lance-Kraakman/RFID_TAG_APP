@@ -2,13 +2,13 @@ from myLib.Database import databaseAbstraction as db
 
 
 class Item:
-    __UUID = ""
+    __UUID = 0
     __name = ""
     __TagStatus = 0
     __CompartmentID = 0
-    __databaseObject = db.databaseAbstraction("databases/tag_database.db", "", "")
+    __databaseObject = db.databaseAbstraction("/home/lance/PycharmProjects/RFID_TAG_APP/databases/tag_database.db", "", "")
 
-    def __init__(self, Name="", UUID="", TagStatus=0, CompartmentID=0):
+    def __init__(self, Name="", UUID=0, TagStatus=0, CompartmentID=0):
         self.setName(Name)
         self.setUUID(UUID)
         self.setTagStatus(TagStatus)
@@ -20,8 +20,14 @@ class Item:
         return cls.createObjectList(compartmentList)
 
     # Parse in Item ID
-    def getItemFromUUID(self, itemsUUID):  # gets all Compartments From Database
-        itm = self.__databaseObject.selectFromTableWhereFieldEqualsValue("ITEM_LIST", "UUID", itemsUUID)
+    @classmethod
+    def getItemFromUUID(cls, itemsUUID):  # gets all Compartments From Database
+        itm = cls.__databaseObject.selectFromTableWhereFieldEqualsValue("ITEM_LIST", "UUID", itemsUUID)[0]
+        print("Length of item: " + len(itm).__str__())
+        print(itm.__str__())
+        print(itm[0].__str__())
+        print(itm[1].__str__())
+        #for i in range(0,4):
         return Item(itm[0], itm[1], itm[2], itm[3])
 
     @classmethod
@@ -32,7 +38,7 @@ class Item:
     def deleteItemFromDatabase(self):
         try:
             self.__databaseObject.deleteFromTableWhereFieldEqualsValue("ITEM_LIST", "UUID", self.getUUID())
-            print("OK")
+            print("DELETING FROM DATA BASE")
         except Exception as err:
             print("Deleting Item from database failed")
 
@@ -87,3 +93,5 @@ class Item:
 
     def __str__(self):
         return ("Name : %s, UUID : %s, TagStatus : %s" % (self.__name, self.__UUID, self.__TagStatus))
+
+

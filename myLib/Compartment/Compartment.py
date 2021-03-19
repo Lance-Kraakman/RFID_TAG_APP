@@ -9,7 +9,8 @@ class Compartment:
     __CompartmentID = -1
     __StorageSectionID = -1
     __CompartmentName = ""
-    __databaseObject = db.databaseAbstraction("databases/tag_database.db", "", "")
+
+    __databaseObject = db.databaseAbstraction("/home/lance/PycharmProjects/RFID_TAG_APP/databases/tag_database.db", "", "")
 
     def __init__(self, StorageSectionID=-1, ledNumber=-1, CompartmentID=-1, compartmentName=""):
         self.setLedNumber(ledNumber)

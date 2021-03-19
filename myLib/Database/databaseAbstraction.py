@@ -36,15 +36,15 @@ class databaseAbstraction:
             return objList
 
     def selectFromTableWhereFieldEqualsValue(self, Table, Item, Value):
-
+        conn = self.__connectToDB()
         try:
-            conn = self.__connectToDB()
             cursor = conn.cursor()
             queryString = ('SELECT * FROM %s WHERE %s = %s' % (Table, Item, Value))
             returnObjList = []
             returnObjList = cursor.execute(queryString).fetchall()
             conn.commit()
         except Exception as err:
+            print("EXCEPTION OCCURED AT sectfromtablewhereFieldequalsvalue")
             print(err)
         finally:
             conn.close()
@@ -87,6 +87,7 @@ class databaseAbstraction:
             cursor.execute(queryString)
             conn.commit()
         except Exception as err:
+            print("CUNT")
             print(err)
         finally:
             conn.close()

@@ -6,7 +6,7 @@ class StorageSection:
     __CompartmentList = []
     __StorageSectionID = -1
     __Name = ""
-    __databaseObject = db.databaseAbstraction("databases/tag_database.db", "", "")
+    __databaseObject = db.databaseAbstraction("/home/lance/PycharmProjects/RFID_TAG_APP/databases/tag_database.db", "", "")
 
     def __init__(self, name="", compartmentList=[], storageSectionID=-1):
         self.__Name = name
