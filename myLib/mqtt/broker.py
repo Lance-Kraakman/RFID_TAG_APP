@@ -10,7 +10,7 @@ import socket
 class Broker:
     def __init__(self):
         self._broker_os = os.name
-        self._mdnsService = mDNS.Mdns()  # Broker has an mDNS service for advertisement
+        self._mdnsService = mDNS.MdnsService()  # Broker has an mDNS service for advertisement
 
     def getOperatingSystem(self):
         return self._broker_os
@@ -24,15 +24,6 @@ class Broker:
 
     # Function registers Mdns service for broker
     def registerMdnsService(self, brokerAddress='localhost', mqttName="_my-def._mqtt._tcp.local."):
-        # desc = {'version': '0.10', 'a': 'test value', 'b': 'another value'}
-        # info = ServiceInfo(
-        #     "_http._tcp.local.", "_my-serv._http._tcp.local.",
-        #     socket.inet_aton("0.0.0.0"), 1234, 0, 0, desc
-        # )
+        # Register Dummy Service for now
 
-        #info = ServiceInfo(info, "_my-serv._http._tcp.local.")
-        addresses = [socket.inet_aton("127.0.0.1")]
-        info = ServiceInfo("_mqtt._tcp.local.", mqttName, 1883, addresses=addresses)
-        print(info)
-        return self.getMdnsService().register_service(info)
 

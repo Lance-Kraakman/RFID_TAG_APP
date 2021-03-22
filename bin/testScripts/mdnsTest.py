@@ -27,7 +27,6 @@ if __name__ == '__main__':
         ip_version = IPVersion.V4Only
 
     ip_version = IPVersion.All
-
     desc = {}
 
     info = ServiceInfo(
@@ -36,7 +35,7 @@ if __name__ == '__main__':
         addresses=[socket.inet_aton("127.0.0.1")],
         port=5683,
         properties=desc,
-        #server="ash-2.local.",
+        server="ash-2.local.",
     )
 
     zeroconf = Zeroconf(ip_version=ip_version, interfaces=InterfaceChoice.All)
