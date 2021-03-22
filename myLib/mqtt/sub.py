@@ -12,9 +12,6 @@ client = mqtt.Client("Smartphone")
 client.connect(mqttBroker)
 
 client.loop_start()
-
 client.subscribe("testing/test/TEMP")
 client.on_message = on_message
-
-time.sleep(50)
 client.loop_stop()
