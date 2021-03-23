@@ -25,5 +25,6 @@ class Broker:
     # Function registers Mdns service for broker
     def registerMdnsService(self, brokerAddress='localhost', mqttName="_my-def._mqtt._tcp.local."):
         # Register Dummy Service for now
+        self.getMdnsService().register_dummy_service()
 
 

@@ -1,5 +1,5 @@
 import unittest
-import pub
+import publisher
 import paho.mqtt.client as mqtt
 
 
@@ -8,7 +8,7 @@ class TestMqtt(unittest.TestCase):
     def setUp(self):
         self.testTopic = "test"
         self.queryHost = 'localhost'
-        self.publisher = pub.MqttClient()
+        self.publisher = publisher.MqttClient()
 
     def tearDown(self):
         pass
@@ -17,7 +17,7 @@ class TestMqtt(unittest.TestCase):
         self.assertIsNotNone(self.publisher.getMqttClient())
 
     def test_publisherQuery(self):
-        self.assertEqual(self.publisher.publishMessage(self.testTopic, "TEST MESSGAGE X"), mqtt.MQTT_ERR_SUCCESS)
+        self.assertEqual(self.publisher.publishMessage(self.testTopic, "TEST MESSGAGE X"), True)
 
     def test_subscriber(self):
         self.assertEqual(self.publisher.subscribeToTopic(self.testTopic), mqtt.MQTT_ERR_SUCCESS)
