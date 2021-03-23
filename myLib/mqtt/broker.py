@@ -8,6 +8,8 @@ import socket
 # This Class should handle the different installations and configurations based on what os is being used
 # This is a TODO for automatic configuration for end-user deployment
 class Broker:
+    # https://www.programcreek.com/python/?code=blinker-iot%2Fblinker-py%2Fblinker-py-master%2FBlinkerAdapters%2FBlinkerLinuxWS.py
+
     def __init__(self):
         self._broker_os = os.name
         self._mdnsService = mDNS.MdnsService()  # Broker has an mDNS service for advertisement
