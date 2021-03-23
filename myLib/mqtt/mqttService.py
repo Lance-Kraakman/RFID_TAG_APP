@@ -47,6 +47,11 @@ class MqttClient:
     def getMessageList(self):
         return self.messageList
 
+    def getAndRemoveMessageList(self):
+        listCopy = self.getMessageList()[:]  # Create a 'copy' instead of a reference
+        self.deleteMessageList()
+        return listCopy
+
     # TO-DO
     # Function should start a MDNS service and advertise mqtt service on the network <3
     def advertiseServices(self):
@@ -77,5 +82,8 @@ class MqttClient:
     # Reads a item from the first item list and removes it from the lists
     def readAndRemove(self):
         return self.getMessageList().pop(0)
+
+    def deleteMessageList(self):
+        self.getMessageList().clear()
 
 

@@ -46,7 +46,7 @@ inputString = ""
 while True:
     try:
         inputString = input("Input rfid to generate a dummy tag or quit to quit\n")
-        if inputString.lower() == "rfid": # generates a list of RFID scan notifications
+        if inputString.lower() == "rfid":  # generates a list of RFID scan notifications
             lastMessage = myMqttClient.getLastMessage('desktop-application')
             print("Last message is %s" % lastMessage[mqttService.DATA_INDEX])
             if lastMessage is not None:
@@ -54,12 +54,11 @@ while True:
                 print("Last message is %s" % lastMessage[mqttService.DATA_INDEX])
 
             # Generate and publish RFID tags if the "Desktop Application is connected"
-            if int(desktop_application_connected) == 1: # Now that the desktop application is connected we will send all of the messages
+            if int(desktop_application_connected) == 1:  # Now that the desktop application is connected we will send all of the messages
                 randomTagList = generateRandomTagList()
-                print("random tag list: %s" % randomTagList)
                 for tag in randomTagList:
                     myMqttClient.publishMessage("rfid", tag.__str__())
-                #print("Generated RFID dummy Tag: %s \n" % randomTag.__str__())
+
         elif inputString.lower() == "quit":
             print("QUITTING RFID TAG SIMULATOR")
             break
