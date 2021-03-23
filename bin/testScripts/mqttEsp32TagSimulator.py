@@ -1,9 +1,9 @@
 # Runnning this script will create a mqtt object which when a key is pressed simulates a RFID tag being pressed
-#from myLib.mqtt import mqttService
-import mqttService
+from myLib.mqtt import mqttService
 import json
 from random import randint
 
+MAX_NUMBER_OF_TAGS_IN_LIST = 13
 listLength = 8
 uuidList = [[99, 2, 23, 2], [4, 345, 23, 23], [3, 345, 8, 23], [5, 33, 33, 23], [45, 345, 34, 23], [99, 2, 23, 2],
             [99, 2, 23, 7], [99, 2, 27, 2]]
@@ -14,49 +14,59 @@ def getRandomTag():
     return json.dumps({'UUID': uuidList[rand]})
 
 
+def generateRandomTagList():
+    randomTagList = []
+    number_of_tags = randint(0, MAX_NUMBER_OF_TAGS_IN_LIST)
+    for i in range(0, number_of_tags):
+        randomTagList.append(json.dumps(getRandomTag()))
+    print(randomTagList)
+    return randomTagList
+
+
+# Gets the result of the last message in a topic
+def getLastMessage(topic):
+    messageList = myMqttClient.getMessageListWithTopic(topic)
+
+    # Get the Last received desktop-application message
+    lastMessage = messageList[len(messageList)]
+
+    # Get the state
+    return lastMessage[topic]
+
+
 print("Initialize MQTT client")
 myMqttClient = mqttService.MqttClient()
 myMqttClient.subscribeToTopic("desktop-application")
-# myMqttClient.publish("desktop-application", 1)  # This needs to be in desktop-app code not simulator
-# Let the ESP32 know that the application is ready to receive messages.
-# In practice we will only publish messages if we recieve a 1 from topic desktop-application
 
-desktop_application_connected = 0  # we need to check if the desktop app is subscribed before we send any messages
+# desktop published a notification which we subscribe 'desktop-application'. If we receive a 1 from this topic the
+# desktop app is ready to communicate and we then send the rfid tags
+desktop_application_connected = 0
 inputString = ""
 
 while True:
     try:
         inputString = input("Input rfid to generate a dummy tag or quit to quit\n")
+        if inputString.lower() == "rfid": # generates a list of RFID scan notifications
+            lastMessage = myMqttClient.getLastMessage('desktop-application')
+            print("Last message is %s" % lastMessage[mqttService.DATA_INDEX])
+            if lastMessage is not None:
+                desktop_application_connected = lastMessage[mqttService.DATA_INDEX]
+                print("Last message is %s" % lastMessage[mqttService.DATA_INDEX])
 
-        if inputString.lower() == "rfid":
-            # generate rfid tag
-            randomTag = json.dumps(getRandomTag())
-            print("Generated RFID dummy Tag: %s \n" % randomTag.__str__())
+            # Generate and publish RFID tags if the "Desktop Application is connected"
+            if int(desktop_application_connected) == 1: # Now that the desktop application is connected we will send all of the messages
+                randomTagList = generateRandomTagList()
+                print("random tag list: %s" % randomTagList)
+                for tag in randomTagList:
+                    myMqttClient.publishMessage("rfid", tag.__str__())
+                #print("Generated RFID dummy Tag: %s \n" % randomTag.__str__())
         elif inputString.lower() == "quit":
             print("QUITTING RFID TAG SIMULATOR")
             break
         else:
             print("Unrecognised Command")
     except Exception as err:
+        print(err)
         print("Exception Occurred")
 
 myMqttClient.mqttDisconnect()
-
-jsonData = json.dumps((['foo', {'bar': ('baz', None, 1.0, 2)}]))
-jsonData = json.dumps({'UUID':[345, 345, 23, 23]})
-
-
-# JSON data format
-# {
-#         "RFID TAG ARRAY":       [{
-#                         "UUID": [136, 4, 145, 11]
-#                 }, {
-#                         "UUID": [136, 4, 153, 11]
-#                 }, {
-#                         "UUID": [136, 4, 171, 11]
-#                 }, {
-#                         "UUID": [136, 4, 171, 11]
-#                 }, {
-#                         "UUID": [136, 4, 163, 11]
-#                 }]
-# }

@@ -1,23 +1,18 @@
-from myLib.mqtt import broker
+from myLib.mqtt import mqttService
 from myLib.mDNS import mDNS
 from zeroconf import ServiceInfo, InterfaceChoice
+import time
 
 
 def app():
-    print("Startin MDNS advertisement service")
-    # myMdns = mDNS.Mdns() # Creates mDNS advertisement service
+    print("Starting MQTT")
+    desktopMqttClient = mqttService.MqttClient()
+    time.sleep(2)
+    desktopMqttClient.publishMessage("desktop-application", 1)
+    time.sleep(5)
+    desktopMqttClient.mqttDisconnect()
 
-    # This should work when we have actual service information <3
-    # https://www.programcreek.com/python/?code=blinker-iot%2Fblinker-py%2Fblinker-py-master%2FBlinkerAdapters%2FBlinkerLinuxWS.py
-    # info = ServiceInfo("_my-dummy._tcp.local.", "_my-dummy._tcp.local.")
-    # myMdns.register_service(info)
 
-    # print("Starting MQTT broker")
-    # myBroker = broker.Broker()
-    # myBroker.registerMdnsService()
-    # myBroker.getMdnsService().get_service_info("_mqtt._tcp.local.", "_my-def._mqtt._tcp.local.")
-    # myBroker.getMdnsService().zeroconf.notify_all()
-    # myBroker.getMdnsService().zeroconf.notify_reaper()
-
+print(__name__)
 
 app()
