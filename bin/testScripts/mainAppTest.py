@@ -6,6 +6,7 @@ from myLib.Rfid import Rfid
 
 from myLib.Controller import MainController
 
+
 # Using threads. One Thread is dedicated too GUI/Database
 # One Thread is dedicated to HTTP/Database
 # May need to consider Semaphore for database access multiple access/datasharing issues
@@ -28,16 +29,12 @@ def HTTP_THREAD(threadName, delay):
             print("- Http Request Start -")
             httpData = httpClient.test_request()
 
-
             rfidTagsScanned.processRfidTagInputs(httpData)
         except Exception as err:
             print(":( Couldnt Make HTTP Request\n")
             print(err)
         finally:
             print(rfidTagsScanned.getRfidTagList())
-
-
-
 
 
 print("Hookay")

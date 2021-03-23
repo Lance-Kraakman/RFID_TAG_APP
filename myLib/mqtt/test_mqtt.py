@@ -1,5 +1,5 @@
 import unittest
-import publisher
+import mqttService
 import paho.mqtt.client as mqtt
 
 
@@ -8,7 +8,7 @@ class TestMqtt(unittest.TestCase):
     def setUp(self):
         self.testTopic = "test"
         self.queryHost = 'localhost'
-        self.publisher = publisher.MqttClient()
+        self.publisher = mqttService.MqttClient()
 
     def tearDown(self):
         pass

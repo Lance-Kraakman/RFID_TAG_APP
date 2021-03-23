@@ -67,11 +67,11 @@ class RfidTagList:
         return updatedRfidList
 
     def setRfidTagsFromHttpJson(self, string_input):
-        rfidListInput = self.getRfidTagsFromHttpJson(string_input)
+        rfidListInput = self.getRfidTagsFromJsonString(string_input)
         self.setRfidTagList(rfidListInput)
 
     def processRfidTagInputs(self, string_input):
-        rfidInputListHttp = self.getRfidTagsFromHttpJson(string_input)  # Get Rfid List From Http Response
+        rfidInputListHttp = self.getRfidTagsFromJsonString(string_input)  # Get Rfid List From Http Response
         rfidInputListDatabase = self.getRfidTagsFromDB()  # Gets all of the rfid Lists From the Database
         itemInDb = False
         for httpTag in rfidInputListHttp:
@@ -108,7 +108,7 @@ class RfidTagList:
         tagItem = it.Item(Name=TagToAdd.getName(), UUID=TagToAdd.getUUID(), TagStatus=(TagToAdd.getTagStatus()))
         it.Item.insertItemIntoDatabase(tagItem)
 
-    def getRfidTagsFromHttpJson(self, string_input):
+    def getRfidTagsFromJsonString(self, string_input):
         rfidTagList = []
         try:
             rfid_tag_array = js.loads(string_input)
