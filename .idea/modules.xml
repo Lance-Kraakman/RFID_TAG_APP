@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/RFID_TAG_APP.iml" filepath="$PROJECT_DIR$/.idea/RFID_TAG_APP.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../pythonGUI/.idea/pythonGUI.iml" filepath="$PROJECT_DIR$/../pythonGUI/.idea/pythonGUI.iml" />
     </modules>
   </component>
 </project>

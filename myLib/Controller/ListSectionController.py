@@ -42,4 +42,3 @@ class ListSectionController(tk.Tk):
     def updateListGUI(self):
         self.updateModel()
         self.updateView()
-

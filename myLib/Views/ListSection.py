@@ -16,6 +16,7 @@ class ListSection(ttk.Frame):
     def getListBox(self):
         return self.listSection.getListBox()
 
+
 # Look at Design Pattern for Java
 class List(ttk.Frame):
     def __init__(self, parent, controller, TagList):

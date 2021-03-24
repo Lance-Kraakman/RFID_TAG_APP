@@ -117,7 +117,8 @@ class RfidTagList:
             for rfid in rfid_tag_array:
                 uuidInts = rfid['UUID']
                 uuidInt = 0
-                for i in range(0, 4):
+                uuidIntLength = int(uuidInts)
+                for i in range(0, uuidIntLength):
                     uuidInt += (uuidInts[i]) << (i * 8)
                     print(i * 8)
 
