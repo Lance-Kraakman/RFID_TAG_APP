@@ -50,6 +50,7 @@ class databaseAbstraction:
             conn.close()
             return returnObjList
 
+    # This needs testing
     def deleteFromTableWhereFieldEqualsValue(self, Table, Item, Value):
         try:
             conn = self.__connectToDB()
@@ -91,6 +92,27 @@ class databaseAbstraction:
             print(err)
         finally:
             conn.close()
+
+    def updateFromTableWhereFieldNameEqualsAndValueNameEqualsValue(self, tableName, fieldName, fieldEquals, valueName, valueEquals):
+        try:
+            conn = self.__connectToDB()
+            cursor = conn.cursor()
+
+            queryString = ('UPDATE %s set %s = %s WHERE %s = %s' % (tableName, valueName, valueEquals, fieldName, fieldEquals))
+            print(queryString)
+            cursor.execute(queryString)
+            conn.commit()
+        except Exception as err:
+            print(err)
+        finally:
+            conn.close()
+
+    # UPDATE
+    # ITEM_LIST
+    # set
+    # TAG_STATUS = 1
+    # WHERE
+    # UUID = 67305985
 
     # Function checks if input is a list. If its not it will convert it to a List
     def __checkIsList(self, isList):

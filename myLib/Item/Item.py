@@ -6,7 +6,8 @@ class Item:
     __name = ""
     __TagStatus = 0
     __CompartmentID = 0
-    __databaseObject = db.databaseAbstraction("/home/lance/PycharmProjects/RFID_TAG_APP/databases/tag_database.db", "", "")
+    __databaseObject = db.databaseAbstraction("/home/lance/PycharmProjects/RFID_TAG_APP/databases/tag_database.db", "",
+                                              "")
 
     def __init__(self, Name="", UUID=0, TagStatus=0, CompartmentID=0):
         self.setName(Name)
@@ -27,7 +28,7 @@ class Item:
         print(itm.__str__())
         print(itm[0].__str__())
         print(itm[1].__str__())
-        #for i in range(0,4):
+        # for i in range(0,4):
         return Item(itm[0], itm[1], itm[2], itm[3])
 
     @classmethod
@@ -41,6 +42,15 @@ class Item:
             print("DELETING FROM DATA BASE")
         except Exception as err:
             print("Deleting Item from database failed")
+
+    def updateDbItemByUUID(self):
+        print("Update Item in the database")
+        try:
+            self.__databaseObject.updateFromTableWhereFieldNameEqualsAndValueNameEqualsValue(
+                tableName='ITEM_LIST', fieldEquals=self.getUUID(), fieldName='UUID', valueName='TAG_STATUS', valueEquals=self.getTagStatus())
+        except Exception as err:
+            print(err.__str__())
+            print("Exception Occured")
 
     def deleteItemsFromDatabase(self, itemList):
         for item in itemList:
@@ -93,5 +103,3 @@ class Item:
 
     def __str__(self):
         return ("Name : %s, UUID : %s, TagStatus : %s" % (self.__name, self.__UUID, self.__TagStatus))
-
-

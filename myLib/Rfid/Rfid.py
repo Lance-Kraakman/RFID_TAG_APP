@@ -8,14 +8,25 @@ TAGGED_OUT = 1
 
 
 class RfidTag:
+    compartmentID = 0
     UUID = 0
     name = ""
     status = TAGGED_IN
 
-    def __init__(self, name="", uuid=0, status=0):
+    def __init__(self, name="", uuid=0, status=0, compartmentID=0):
         self.UUID = uuid
         self.name = name
         self.status = status
+
+    def updateDatabaseTag(self):  # Edits the parsed tag in the database
+        # Create Generic ITEM object from RFID
+        updateItem = it.Item(self.getName(), self.getUUID(), self.getTagStatus(), self.getCompartmentID())
+        # Update Item From DB
+        updateItem.updateDbItemByUUID()
+
+    def addToDatabase(self):
+        tagItem = it.Item(Name=self.getName(), UUID=self.getUUID(), TagStatus=(self.getTagStatus()))
+        it.Item.insertItemIntoDatabase(tagItem)
 
     def __str__(self):
         return "UUID %d: Name %s: Status %d" % (self.UUID, self.name, self.status)  # Make this fixed length for display
@@ -31,6 +42,12 @@ class RfidTag:
 
     def getName(self):
         return self.name
+
+    def getCompartmentID(self):
+        return self.compartmentID
+
+    def setCompartmentID(self, compartmentID):
+        self.compartmentID = compartmentID
 
 
 class RfidTagList:
@@ -70,6 +87,8 @@ class RfidTagList:
         rfidListInput = self.getRfidTagsFromJsonString(string_input)
         self.setRfidTagList(rfidListInput)
 
+    # Updates the database from JSON input string of RFID tags
+    # IF the RFID tags are already in the database
     def processRfidTagInputs(self, string_input):
         rfidInputListHttp = self.getRfidTagsFromJsonString(string_input)  # Get Rfid List From Http Response
         rfidInputListDatabase = self.getRfidTagsFromDB()  # Gets all of the rfid Lists From the Database
@@ -79,7 +98,7 @@ class RfidTagList:
                 if httpTag.getUUID() == dbTag.getUUID():
                     try:
                         dbTag.setTagStatus(int(not dbTag.getTagStatus()))
-                        self.updateDatabaseTag(dbTag)  # Function Edits Tag In Database
+                        dbTag.updateDatabaseTag()  # Function Edits Tag In Database
                     except Exception as err:
                         print(err)
                     itemInDb = True
@@ -87,26 +106,10 @@ class RfidTagList:
 
             if not itemInDb:
                 try:
-                    self.addToDatabase(httpTag)  # Function adds httpTag to Database
+                    httpTag.addToDatabase()  # Function adds httpTag to Database
                 except Exception as err:
                     print(err)
             itemInDb = False  # Set Flag To False no matter what
-
-    def updateDatabaseTag(self, TagToEdit):  # Edits the parsed tag in the database
-        pass
-        # get item from database
-        tagItem = it.Item.getItemFromUUID(TagToEdit.getUUID())
-        #delete Item from database
-        it.Item.deleteItemFromDatabase(tagItem)
-        # Add the updated tag to the database
-        print("---------------------------------------------------------------")
-        self.addToDatabase(TagToEdit)
-        print("---------------------------------------------------------------")
-
-
-    def addToDatabase(self, TagToAdd):
-        tagItem = it.Item(Name=TagToAdd.getName(), UUID=TagToAdd.getUUID(), TagStatus=(TagToAdd.getTagStatus()))
-        it.Item.insertItemIntoDatabase(tagItem)
 
     def getRfidTagsFromJsonString(self, string_input):
         rfidTagList = []
@@ -117,7 +120,7 @@ class RfidTagList:
             for rfid in rfid_tag_array:
                 uuidInts = rfid['UUID']
                 uuidInt = 0
-                uuidIntLength = int(uuidInts)
+                uuidIntLength = len(uuidInts)
                 for i in range(0, uuidIntLength):
                     uuidInt += (uuidInts[i]) << (i * 8)
                     print(i * 8)
