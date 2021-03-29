@@ -44,7 +44,6 @@ class Item:
             print("Deleting Item from database failed")
 
     def updateDbItemByUUID(self):
-        print("Update Item in the database")
         try:
             self.__databaseObject.updateFromTableWhereFieldNameEqualsAndValueNameEqualsValue(
                 tableName='ITEM_LIST', fieldEquals=self.getUUID(), fieldName='UUID', valueName='TAG_STATUS', valueEquals=self.getTagStatus())

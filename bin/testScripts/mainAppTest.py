@@ -2,7 +2,7 @@ import _thread as th
 import time
 from myLib.Item import Item as it
 from myLib.webClient import httpsClient as http
-from myLib.Rfid import Rfid
+from myLib.Rfid import Rfid, RfidNetworkService
 
 from myLib.Controller import MainController
 
@@ -21,7 +21,7 @@ def GUI_THREAD(threadName, delay):
 def HTTP_THREAD(threadName, delay):
     print("HTTP STUFF :O")
     httpClient = http.HttpsClient()
-    rfidTagsScanned = Rfid.RfidTagList()
+    rfidTagsScanned = RfidNetworkService.RfidNetworkService()
     while True:
         print("HTTP REQUEST - > UPDATE DATABASE")
         uuidList = []

@@ -22,7 +22,7 @@ def app():
             if messagesReceived is not None:
                 for message in messagesReceived:
                     print(message[mqttService.DATA_INDEX])  # Print the UUID for every received message
-                messagesReceived = []
+            messagesReceived = []
         except Exception as err:
             interrupted = True
             print(err)

@@ -11,7 +11,12 @@ uuidList = [[99, 2, 23, 2], [4, 345, 23, 23], [3, 345, 8, 23], [5, 33, 33, 23], 
 
 def getRandomTag():
     rand = randint(0, listLength - 1)
-    return json.dumps({'UUID': uuidList[rand]})
+    returnJson = {}
+    returnJson["RFID TAG ARRAY"] = []
+    UUID_OBJ = {"UUID": uuidList[rand].copy()}
+    returnJson["RFID TAG ARRAY"].append(UUID_OBJ)
+    print(returnJson['RFID TAG ARRAY'])
+    return returnJson
 
 
 def generateRandomTagList():
@@ -26,11 +31,8 @@ def generateRandomTagList():
 # Gets the result of the last message in a topic
 def getLastMessage(topic):
     messageList = myMqttClient.getMessageListWithTopic(topic)
-
     # Get the Last received desktop-application message
     lastMessage = messageList[len(messageList)]
-
-    # Get the state
     return lastMessage[topic]
 
 
@@ -47,17 +49,23 @@ while True:
     try:
         inputString = input("Input rfid to generate a dummy tag or quit to quit\n")
         if inputString.lower() == "rfid":  # generates a list of RFID scan notifications
+            print("OK")
             lastMessage = myMqttClient.getLastMessage('desktop-application')
-            print("Last message is %s" % lastMessage[mqttService.DATA_INDEX])
+            print(lastMessage)
+            print("OK")
+
+            #print("Last messae is %s" % lastMessage[mqttService.DATA_INDEX])
             if lastMessage is not None:
                 desktop_application_connected = lastMessage[mqttService.DATA_INDEX]
                 print("Last message is %s" % lastMessage[mqttService.DATA_INDEX])
 
             # Generate and publish RFID tags if the "Desktop Application is connected"
             if int(desktop_application_connected) == 1:  # Now that the desktop application is connected we will send all of the messages
+                print("OK")
                 randomTagList = generateRandomTagList()
                 for tag in randomTagList:
-                    myMqttClient.publishMessage("rfid", tag.__str__())
+                    print(tag)
+                    myMqttClient.publishMessage("rfid", tag)
 
         elif inputString.lower() == "quit":
             print("QUITTING RFID TAG SIMULATOR")

@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 from myLib.Views import ListSection as ls
-from myLib.Rfid import Rfid as rf
+from myLib.Rfid import RfidNetworkService as rf
 
 
 class ListSectionController(tk.Tk):
@@ -9,10 +9,9 @@ class ListSectionController(tk.Tk):
         print("Hello World!")
 
         # Tag Model
-        self.model = rf.RfidTagList()
+        self.model = rf.RfidNetworkService()
 
         # Tag View
-
         self.sectionFrame = ls.ListSection(parent, self, self.model)
         self.sectionFrame.pack(expand="False")  # This sets the position with main frame i think :)
 
@@ -31,10 +30,6 @@ class ListSectionController(tk.Tk):
 
     def updateModel(self):
         self.model.setRfidTagList(self.model.getRfidTagsFromDB())  # Updates the List of RFID Tags. Getting them from the database
-        #self.model.printRfidTags()
-
-        # Get items from the database
-        # Get
 
     def updateView(self):
         self.sectionFrame.getListSection().updateList()

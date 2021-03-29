@@ -36,7 +36,8 @@ class MqttClient:
         returnList = []
         print(returnList)
         messageList = self.getMessageList()
-        if messageList is not None:
+        print(messageList)
+        if (messageList is not None) | (len(messageList) == 0):
             for messageDict in self.getMessageList():
                 if messageDict[TOPIC_INDEX] == topic:
                     print(returnList)

@@ -10,7 +10,6 @@ class MainApp(tk.Frame):
         master.title('RFID TAG APP')
         master.geometry("500x500")
 
-
         tk.Frame.__init__(self, master)
         #self.title("Robot Control App")
         custom_style = ttk.Style()
@@ -25,8 +24,6 @@ class MainApp(tk.Frame):
         self.onUpdate()
         self.pack()
 
-
-
     # Using theese we can use MVC in controller application
     def getListSection(self):
         #return self.sectionFrame
@@ -38,5 +35,5 @@ class MainApp(tk.Frame):
 
     def onUpdate(self):
         self.listSectionController.updateListGUI()
-        self.after(500, self.onUpdate)
+        self.after(50, self.onUpdate)
 
